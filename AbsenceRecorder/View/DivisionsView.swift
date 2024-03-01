@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  DivisionsView.swift
 //  AbsenceRecorder
 //
 //  Created by Ralph Matta on 09/02/2024.
@@ -7,15 +7,16 @@
 
 import SwiftUI
 
-struct ContentView: View {
-    
-    var divisions: [Division]
+struct DivisionsView: View {
+    @EnvironmentObject var state: StateController
     @State private var currentDate: Date = Date()
     
     var body: some View {
         NavigationView {
-            List(divisions, id: \.self.code) { division in
-                DivisionItem(division: division)
+            List(state.divisions, id: \.self.code) { division in
+                NavigationLink(destination: AbsenceView(division: division)) {
+                    DivisionItem(division: division)
+                }
             }
             .navigationTitle(currentDate.getShortDate())
             .toolbar {
@@ -37,5 +38,6 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView(divisions: Division.examples)
+    DivisionsView()
+        .environmentObject(StateController())
 }
